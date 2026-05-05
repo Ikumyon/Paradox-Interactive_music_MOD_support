@@ -103,7 +103,13 @@ class OggRenameApp(QMainWindow):
 
     def init_settings_dir(self) -> None:
         # Get directory where the script/exe is located
-        base_dir = Path(__file__).parent
+        if getattr(sys, 'frozen', False):
+            # Bundled by PyInstaller
+            base_dir = Path(sys.executable).parent
+        else:
+            # Running as script
+            base_dir = Path(__file__).parent
+
         self.settings_dir = base_dir / "settings"
         self.settings_dir.mkdir(exist_ok=True)
         
